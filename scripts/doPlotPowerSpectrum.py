@@ -1,6 +1,7 @@
 import sys
 import argparse
 import pickle
+import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
@@ -35,10 +36,10 @@ def main(argv):
     freqs = results["freqs"]
 
     fig = go.Figure()
-    trace = go.Scatter(x=freqs, y=Sxx)
+    trace = go.Scatter(x=freqs, y=10 * np.log10(Sxx/np.max(Sxx)))
     fig.add_trace(trace)
-    fig.update_xaxes(title="Frequency (Hz)"),
-    fig.update_yaxes(title=r"$Sxx (\mu V^2/Hz)$")
+    fig.update_xaxes(title="Frequency (Hz)", type="log"),
+    fig.update_yaxes(title="Power (dB)")
     fig.write_image(fig_filename_pattern.format(fraction_start, fraction_end,
                                                 "png"))
     fig.write_html(fig_filename_pattern.format(fraction_start, fraction_end,
